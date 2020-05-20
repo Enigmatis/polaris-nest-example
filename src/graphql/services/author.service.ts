@@ -9,7 +9,6 @@ import {
 import { CONTEXT } from "@nestjs/graphql";
 import { Author } from "../../dal/models/author";
 import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import { TestContext } from "../../context/test-context";
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthorService {
@@ -18,34 +17,28 @@ export class AuthorService {
     private readonly authorRepository: PolarisRepository<Author>,
     @InjectConnection()
     private readonly connection: PolarisConnection,
-    @Inject(CONTEXT) private readonly ctx: TestContext
+    @Inject(CONTEXT) private readonly ctx: PolarisGraphQLContext
   ) {}
 
-  async create(firstName: string, lastName: string): Promise<Author | Author> {
+  async create(firstName: string, lastName: string): Promise<Author | undefined> {
     const author = new Author(firstName, lastName);
     return ((await this.authorRepository.save(
       this.ctx,
       author
-    )) as unknown) as Promise<Author | Author>;
+    )) as unknown) as Promise<Author | undefined>;
   }
 
-  async findOneById(id: string): Promise<Author> {
+  async findOneById(id: string): Promise<Author | undefined> {
     return this.authorRepository.findOne(this.ctx, id);
   }
 
-  async findOneByName(name: string): Promise<Author> {
+  async findOneByName(name: string): Promise<Author | undefined> {
     return this.authorRepository.findOne(this.ctx, name);
   }
 
   async findByName(name: string): Promise<Author[]> {
     return this.authorRepository.find(this.ctx, {
       where: { firstName: Like(`%${name}%`) },
-    });
-  }
-
-  async findByFirstName(): Promise<Author[]> {
-    return this.authorRepository.find(this.ctx, {
-      where: { firstName: Like(`%${this.ctx.requestHeaders.customHeader}%`) },
     });
   }
 
@@ -60,13 +53,5 @@ export class AuthorService {
       result.affected !== undefined &&
       result.affected > 0
     );
-  }
-
-  returnCustomField(): number {
-    return this.ctx.customField;
-  }
-
-  customContextInstanceMethod(): string {
-    return this.ctx.instanceInContext.doSomething();
   }
 }

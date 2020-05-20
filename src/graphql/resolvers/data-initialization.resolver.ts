@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { DataInitializationService } from "../services/data-initialization.service";
 
-@Resolver((of) => Boolean)
+@Resolver(() => Boolean)
 export class DataInitializationResolver {
   constructor(private readonly dataInit: DataInitializationService) {}
   @Mutation((returns) => Boolean)

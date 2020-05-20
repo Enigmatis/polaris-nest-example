@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { RepositoryEntity } from "../../../../src";
+import { RepositoryEntity } from "@enigmatis/polaris-nest";
 import { Book } from "./book";
 
 @ObjectType({
@@ -7,11 +7,11 @@ import { Book } from "./book";
 })
 export class Author extends RepositoryEntity {
   @Field()
-  firstName: string;
+  firstName?: string;
 
   @Field({ nullable: true })
   lastName?: string;
 
   @Field((type) => [Book], { nullable: true })
-  books: Book[];
+  books?: Book[];
 }

@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { Book } from "../../dal/models/book";
 import { BookService } from "../services/book.service";
 import { BookResolver } from "../resolvers/book.resolver";
-import { TypeOrmModule } from "../../../../src/typeorm/typeorm.module";
+import { TypeOrmModule } from "@enigmatis/polaris-nest";
 import { DataInitializationModule } from "./data-initialization.module";
 import { Author } from "../../dal/models/author";
 import { PubSub } from "graphql-subscriptions";
