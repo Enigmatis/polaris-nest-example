@@ -1,6 +1,5 @@
 import { polarisGraphQLLogger } from "../utils/logger";
 import {
-  ExpressContext,
   PolarisServerOptions,
   RealitiesHolder,
 } from "@enigmatis/polaris-core";
@@ -17,6 +16,13 @@ export const createOptions: () => PolarisServerOptions = () => {
       environment: polarisProperties.environment,
       component: polarisProperties.component,
     },
+    // snapshotConfig: {
+    //   autoSnapshot: true,
+    //   maxPageSize: 1,
+    //   snapshotCleaningInterval: 60,
+    //   secondsToBeOutdated: 60,
+    //   entitiesAmountPerFetch: 50,
+    // },
     logger: polarisGraphQLLogger,
     supportedRealities: new RealitiesHolder(
       new Map([[3, { id: 3, type: "notreal3", name: "default" }]])
